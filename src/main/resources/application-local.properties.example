@@ -1,0 +1,11 @@
+# Sao chep thanh: src/main/resources/application-local.properties (file nay da gitignore)
+#
+spring.datasource.password=your-mysql-password
+
+spring.security.oauth2.client.registration.google.client-id=your-id.apps.googleusercontent.com
+spring.security.oauth2.client.registration.google.client-secret=GOCSPX-your-secret
+
+# Hoac chi dat bien moi truong (khong can file local), vi du PowerShell:
+# $env:SPRING_DATASOURCE_PASSWORD="..."
+# $env:GOOGLE_CLIENT_ID="..."
+# $env:GOOGLE_CLIENT_SECRET="..."

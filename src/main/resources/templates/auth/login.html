@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Đăng nhập</title>
+    <style>
+        body { margin: 0; font-family: Arial, sans-serif; background: #f5f7fb; color: #1f2937; }
+        .container { min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 16px; }
+        .card { width: 100%; max-width: 440px; background: #fff; border: 1px solid #e5e7eb; border-radius: 10px; box-shadow: 0 2px 12px rgba(15,23,42,.06); padding: 18px; }
+        h1 { margin: 0 0 4px; font-size: 22px; color: #14348f; }
+        .sub { margin: 0 0 14px; color: #64748b; font-size: 14px; }
+        .row { margin-bottom: 12px; }
+        label { display: block; margin-bottom: 6px; font-weight: 600; }
+        input { width: 100%; box-sizing: border-box; padding: 10px; border: 1px solid #cbd5e1; border-radius: 6px; font-size: 14px; }
+        .banner { margin-bottom: 10px; border-radius: 6px; padding: 8px 10px; font-size: 14px; }
+        .banner-error { background: #fee2e2; color: #991b1b; }
+        .banner-success { background: #dcfce7; color: #166534; }
+        .btn { width: 100%; border: 1px solid #1247c7; background: #1247c7; color: #fff; border-radius: 6px; padding: 10px; cursor: pointer; font-weight: 600; }
+        .btn-google {
+            display: block; width: 100%; box-sizing: border-box;
+            text-align: center; text-decoration: none;
+            border: 1px solid #dadce0; background: #fff; color: #3c4043;
+            border-radius: 6px; padding: 10px; font-weight: 600; font-size: 14px;
+        }
+        .btn-google:hover { background: #f8f9fa; }
+        .divider { display: flex; align-items: center; gap: 10px; margin: 16px 0; color: #64748b; font-size: 13px; }
+        .divider::before, .divider::after { content: ""; flex: 1; height: 1px; background: #e5e7eb; }
+        .links { margin-top: 10px; text-align: center; font-size: 14px; }
+        .links a { color: #1247c7; text-decoration: none; }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="card">
+        <h1>Đăng nhập</h1>
+        <p class="sub">Nhập username và password để tiếp tục</p>
+
+        <div class="banner banner-success" th:if="${successMessage}" th:text="${successMessage}"></div>
+        <div class="banner banner-error" th:if="${param.error}">Sai username hoặc password</div>
+        <div class="banner banner-success" th:if="${param.logout}">Đã đăng xuất</div>
+
+        <form th:action="@{/login}" method="post">
+            <div class="row">
+                <label for="username">Username</label>
+                <input id="username" type="text" name="username" placeholder="abcdef" required>
+            </div>
+
+            <div class="row">
+                <label for="password">Password</label>
+                <input id="password" type="password" name="password" placeholder="123456abcd" required>
+            </div>
+
+            <button class="btn" type="submit">Đăng nhập</button>
+        </form>
+
+        <div class="divider">hoặc</div>
+        <a class="btn-google" th:href="@{/oauth2/authorization/google}">Đăng nhập bằng Google</a>
+
+        <div class="links">
+            Chưa có tài khoản? <a th:href="@{/register}">Đăng ký</a>
+        </div>
+    </div>
+</div>
+</body>
+</html>
+

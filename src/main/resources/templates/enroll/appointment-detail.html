@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chi tiết lịch khám</title>
+    <style>
+        body { margin: 0; font-family: Arial, sans-serif; background: #f5f7fb; color: #1f2937; }
+        .container { max-width: 640px; margin: 24px auto; padding: 0 16px; }
+        .card { background: #fff; border: 1px solid #e5e7eb; border-radius: 10px; padding: 18px; box-shadow: 0 2px 12px rgba(0,0,0,.06); }
+        h1 { margin: 0 0 16px; color: #14348f; font-size: 22px; }
+        dl { margin: 0; }
+        dt { font-size: 12px; color: #64748b; margin-top: 12px; }
+        dt:first-child { margin-top: 0; }
+        dd { margin: 4px 0 0; font-size: 15px; }
+        .actions { display: flex; gap: 10px; margin-top: 20px; flex-wrap: wrap; }
+        .btn { text-decoration: none; border: 1px solid #cbd5e1; border-radius: 6px; padding: 8px 12px; background: #fff; color: #1f2937; cursor: pointer; font-size: 14px; }
+        .btn-primary { background: #1247c7; border-color: #1247c7; color: #fff; }
+        .btn-danger { border-color: #dc2626; color: #dc2626; background: #fff; }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="card">
+        <h1>Chi tiết lịch khám</h1>
+        <dl>
+            <dt>Bác sĩ</dt>
+            <dd th:text="${appointment.doctor != null ? appointment.doctor.name : '—'}">BS A</dd>
+            <dt>Chuyên khoa</dt>
+            <dd th:text="${appointment.doctor != null ? appointment.doctor.specialty : '—'}">—</dd>
+            <dt>Khoa</dt>
+            <dd th:text="${appointment.doctor != null and appointment.doctor.department != null ? appointment.doctor.department.name : '—'}">—</dd>
+            <dt>Ngày giờ khám</dt>
+            <dd th:text="${#temporals.format(appointment.appointmentTime, 'yyyy-MM-dd HH:mm')}">2026-03-24 08:30</dd>
+            <dt>Trạng thái</dt>
+            <dd>
+                <span th:if="${appointment.status.name() == 'PENDING'}">Chờ xác nhận</span>
+                <span th:if="${appointment.status.name() == 'CONFIRMED'}">Đã xác nhận</span>
+                <span th:if="${appointment.status.name() == 'CANCELLED'}">Đã hủy</span>
+                <span th:if="${appointment.status.name() == 'DONE'}">Hoàn thành</span>
+            </dd>
+            <dt th:if="${appointment.note != null and !#strings.isEmpty(appointment.note)}">Ghi chú</dt>
+            <dd th:if="${appointment.note != null and !#strings.isEmpty(appointment.note)}" th:text="${appointment.note}"></dd>
+        </dl>
+        <div class="actions">
+            <a class="btn btn-primary" th:href="@{/enroll}">Về trang chủ của tôi</a>
+            <form th:action="@{/enroll/my-appointments/{id}/cancel(id=${appointment.id})}" method="post">
+                <button class="btn btn-danger" type="submit" onclick="return confirm('Bạn có chắc muốn hủy lịch khám này không?')">Hủy lịch</button>
+            </form>
+        </div>
+    </div>
+</div>
+</body>
+</html>

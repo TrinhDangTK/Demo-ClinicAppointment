@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin - Thêm khoa</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 24px; background: #f7f7f7; }
+        .card { max-width: 560px; background: #fff; border: 1px solid #e5e7eb; border-radius: 8px; padding: 16px; }
+        .field { display: flex; flex-direction: column; gap: 6px; margin-bottom: 12px; }
+        .input { border: 1px solid #d1d5db; border-radius: 6px; padding: 8px 10px; }
+        .error { color: #dc2626; font-size: 13px; margin: 0 0 10px; }
+        .actions { display: flex; gap: 8px; }
+        .btn { text-decoration: none; border: 1px solid #ccc; border-radius: 6px; padding: 8px 12px; background: #fff; color: #222; cursor: pointer; }
+        .btn-primary { background: #0d6efd; color: #fff; border-color: #0d6efd; }
+    </style>
+</head>
+<body>
+<h1>Thêm khoa mới</h1>
+
+<div class="card">
+    <p class="error" th:if="${errorMessage}" th:text="${errorMessage}"></p>
+
+    <form th:action="@{/admin/departments/create}" th:object="${departmentForm}" method="post">
+        <div class="field">
+            <label for="name">Tên khoa</label>
+            <input id="name" class="input" type="text" th:field="*{name}" placeholder="Ví dụ: Khoa Nội tổng quát">
+            <p class="error" th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></p>
+        </div>
+
+        <div class="actions">
+            <button class="btn btn-primary" type="submit">Lưu khoa</button>
+            <a class="btn" th:href="@{/admin/doctors}">Quay lại</a>
+        </div>
+    </form>
+</div>
+</body>
+</html>

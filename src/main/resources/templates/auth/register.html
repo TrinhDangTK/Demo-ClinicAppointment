@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Đăng ký tài khoản</title>
+    <style>
+        body { margin: 0; font-family: Arial, sans-serif; background: #f5f7fb; color: #1f2937; }
+        .container { min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 16px; }
+        .card { width: 100%; max-width: 440px; background: #fff; border: 1px solid #e5e7eb; border-radius: 10px; box-shadow: 0 2px 12px rgba(15,23,42,.06); padding: 18px; }
+        h1 { margin: 0 0 4px; font-size: 22px; color: #14348f; }
+        .sub { margin: 0 0 14px; color: #64748b; font-size: 14px; }
+        .row { margin-bottom: 12px; }
+        label { display: block; margin-bottom: 6px; font-weight: 600; }
+        input { width: 100%; box-sizing: border-box; padding: 10px; border: 1px solid #cbd5e1; border-radius: 6px; font-size: 14px; }
+        .error { margin-top: 4px; color: #dc2626; font-size: 13px; }
+        .banner-error { margin-bottom: 10px; background: #fee2e2; color: #991b1b; border-radius: 6px; padding: 8px 10px; font-size: 14px; }
+        .btn { width: 100%; border: 1px solid #1247c7; background: #1247c7; color: #fff; border-radius: 6px; padding: 10px; cursor: pointer; font-weight: 600; }
+        .links { margin-top: 10px; text-align: center; font-size: 14px; }
+        .links a { color: #1247c7; text-decoration: none; }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="card">
+        <h1>Đăng ký tài khoản</h1>
+        <p class="sub">Nhập thông tin gồm username, password và email</p>
+
+        <div class="banner-error" th:if="${registerError}" th:text="${registerError}"></div>
+
+        <form th:action="@{/register}" th:object="${registerForm}" method="post">
+            <div class="row">
+                <label for="username">Username</label>
+                <input id="username" type="text" th:field="*{username}" placeholder="abcde">
+                <div class="error" th:if="${#fields.hasErrors('username')}" th:errors="*{username}"></div>
+            </div>
+
+            <div class="row">
+                <label for="password">Password</label>
+                <input id="password" type="password" th:field="*{password}" placeholder="123abcd">
+                <div class="error" th:if="${#fields.hasErrors('password')}" th:errors="*{password}"></div>
+            </div>
+
+            <div class="row">
+                <label for="email">Email</label>
+                <input id="email" type="email" th:field="*{email}" placeholder="abcdef@gmail.com">
+                <div class="error" th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></div>
+            </div>
+
+            <button class="btn" type="submit">Đăng ký</button>
+        </form>
+
+        <div class="links">
+            Đã có tài khoản? <a th:href="@{/login}">Đăng nhập</a>
+        </div>
+    </div>
+</div>
+</body>
+</html>

@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin - Quản lý bác sĩ</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 24px; background: #f7f7f7; }
+        .topbar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; }
+        .btn {
+            text-decoration: none;
+            border: 1px solid #d1d5db;
+            border-radius: 6px;
+            padding: 7px 10px;
+            background: #fff;
+            color: #1f2937;
+            font-size: 13px;
+            cursor: pointer;
+        }
+        .btn-primary { background: #0d6efd; color: #fff; border-color: #0d6efd; }
+        table { width: 100%; border-collapse: collapse; background: #fff; border-radius: 8px; overflow: hidden; }
+        th, td { padding: 10px; border-bottom: 1px solid #eee; text-align: left; }
+        th { background: #f1f3f5; }
+        .actions { display: flex; gap: 8px; }
+        .btn-danger { border-color: #dc3545; color: #dc3545; background: #fff; }
+        .pagination {
+            margin-top: 20px;
+            display: flex;
+            gap: 8px;
+            align-items: center;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+        .pagination a {
+            text-decoration: none;
+            border: 1px solid #d1d5db;
+            border-radius: 6px;
+            padding: 6px 10px;
+            background: #fff;
+            color: #1f2937;
+        }
+        .pagination a:hover {
+            border-color: #93c5fd;
+            background: #eff6ff;
+        }
+        .pagination span.page-link {
+            border: 1px solid #d1d5db;
+            border-radius: 6px;
+            padding: 6px 10px;
+            background: #fff;
+            color: #1f2937;
+        }
+        .pagination .page-current {
+            border-color: #0d6efd;
+            background: #0d6efd;
+            color: #fff;
+            font-weight: 600;
+        }
+        .pagination .disabled {
+            color: #999;
+            border-color: #e0e0e0;
+            background: #f0f0f0;
+        }
+        .success { background: #d1e7dd; color: #0f5132; padding: 10px; border-radius: 8px; margin-bottom: 12px; }
+    </style>
+</head>
+<body>
+<div class="topbar">
+    <h1>Quản lý danh sách bác sĩ</h1>
+    <div class="actions">
+        <a class="btn" th:href="@{/admin/departments/create}">+ Thêm khoa</a>
+        <a class="btn" th:href="@{/admin/appointments}">Quản lý lịch khám</a>
+        <a class="btn" th:href="@{/courses}">Về trang chủ</a>
+        <a class="btn btn-primary" th:href="@{/admin/doctors/create}">+ Thêm bác sĩ</a>
+    </div>
+</div>
+
+<div class="success" th:if="${successMessage}" th:text="${successMessage}"></div>
+
+<table>
+    <thead>
+    <tr>
+        <th>ID</th>
+        <th>Tên bác sĩ</th>
+        <th>Chuyên khoa</th>
+        <th>Khoa</th>
+        <th>Ảnh</th>
+        <th>Hành động</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:if="${doctorPage.content.isEmpty()}">
+        <td colspan="6">Chưa có dữ liệu</td>
+    </tr>
+    <tr th:each="doctor : ${doctorPage.content}">
+        <td th:text="${doctor.id}">1</td>
+        <td th:text="${doctor.name}">BS. Nguyen Van A</td>
+        <td th:text="${doctor.specialty}">Noi tong quat</td>
+        <td th:text="${doctor.department != null ? doctor.department.name : ''}">Khoa Noi</td>
+        <td>
+            <a class="btn" th:href="${doctor.imageUrl}" target="_blank">Xem ảnh</a>
+        </td>
+        <td>
+            <div class="actions">
+                <a class="btn" th:href="@{/admin/doctors/{id}/edit(id=${doctor.id})}">Sửa</a>
+                <form th:action="@{/admin/doctors/{id}/delete(id=${doctor.id})}" method="post">
+                    <button class="btn btn-danger" type="submit" onclick="return confirm('Bạn có chắc chắn muốn xóa?')">Xóa</button>
+                </form>
+            </div>
+        </td>
+    </tr>
+    </tbody>
+</table>
+
+<div class="pagination" th:if="${doctorPage.totalPages > 0}">
+    <a th:if="${!doctorPage.first}"
+       th:href="@{/admin/doctors(page=${currentPage - 1})}">Trước</a>
+    <span class="page-link disabled" th:if="${doctorPage.first}">Trước</span>
+
+    <th:block th:each="i : ${#numbers.sequence(0, doctorPage.totalPages - 1)}">
+        <span class="page-link page-current"
+              th:if="${i == currentPage}"
+              th:text="${i + 1}">1</span>
+        <a th:if="${i != currentPage}"
+           th:href="@{/admin/doctors(page=${i})}"
+           th:text="${i + 1}">1</a>
+    </th:block>
+
+    <a th:if="${!doctorPage.last}"
+       th:href="@{/admin/doctors(page=${currentPage + 1})}">Sau</a>
+    <span class="page-link disabled" th:if="${doctorPage.last}">Sau</span>
+</div>
+
+</body>
+</html>
